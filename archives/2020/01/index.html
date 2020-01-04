@@ -1,123 +1,24 @@
+extends ../_partial/layout
 
-
-
-
-
-
-
-
-<!doctype html>
-<html lang="zh-CN">
-
-<script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-<script type="text/javascript" 
-src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js">
-</script>
-<link href=  "/plugins/code-theme/tomorrow.css" type="text/css" rel="stylesheet" />
-<link rel="stylesheet" href="/plugins/github-markdown.css">
-
-<head>
-  <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1">
-  
-    
-    
-      <link rel="stylesheet" href="/css/legend.css">
-    
-  
-<meta name="generator" content="Hexo 4.2.0"></head>
-
-<body id="body-archive-bg">
-<div id="layout-content">
-  <div id="menu-outer-x">
-  <div id="menu-inner">
-    
-    
-    <div id="site-title">
-      互联网白加黑
-    </div>
-    
-
-     
-    <div>
-    
-      
-      <a href="/">首页</a>
-      
-    
-      
-      <a href="/archives">归档</a>
-      
-    
-    </div>
-  </div>
-</div> 
-  <div id="content-outer">
-    <div id="content-inner">
-      
-      
-<div id="archive-outer">
-  <div id="archive-inter">
-      
-       
-        <div classets="archive-item">
-           
-            
-             
-             
-             <div id="archive-year"> 2020年 </div>
-           
-           
-            
-            <a href="/2020/01/04/hello-world/">
-              <time id="archive-item-time" datetime="2020-01-03T17:41:35.425Z">
-                01-04
-              </time>
-              Hello World 
-            </a>
-          
-        </div>
-      
-    </div>
-</div>
-
-    </div>
-  </div>
-</div>
-
-
-
-<div id="bottom-outer">
-  
-  <div id="bottom-inner">
-    weiz 
-    ©2020 |Powered by  
-    <a href="http://hexo.io" target="_blank">Hexo</a> with theme 
-    <a href="https://github.com/iHongRen/legend" target="_blank">legend</a>
-  </div>
-    
-    
-    
-      <a href="/atom.xml">
-      
-      <img src=/images/rss.png height="18" width="18">
-      
-</div> 
-
-
-  
-  
-    <script src="/js/legend.js"></script>
-  
-
-
-</body>
-</html>
-
-
-<script>
-$(window).on('load', function(){
-   $('pre').addClass('prettyprint').attr('style', 'overflow:auto;');
-   prettyPrint();
- });
-</script>
-
+block content
+  .container
+    -var last;
+    each post in page.posts.data
+      -var year = post.date.year();
+      if last !== year
+        -last = year
+        .year-wrap
+          .year
+            a.title(href=url_for(config.archive_dir + '/' + year))= year
+        .archives
+          each post in page.posts.data
+            -var innerYear = post.date.year()
+            if innerYear === year
+              .post-archive
+                //- a(href=url_for(post.path))
+                .post-archive__content
+                  .post-archive__month= time(post.date, 'MM月')
+                  .post-archive__body
+                    a.post-archive__title(href=url_for(post.path))= post.title
+                    .post-archive__excerpt
+                      .post-archive__excerpt-content!= post.excerpt
