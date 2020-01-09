@@ -1,0 +1,32 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="description" content="白天看白篇,补锅补到手发荒;晚上看黑篇,每天一个入狱小技巧"><meta name="keyword"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>open api</title><link rel="shortcut icon" href="/images/avatar.png" type="image/x-icon"><link href="/styles/site.css" rel="stylesheet"><meta name="generator" content="Hexo 4.2.0"></head><body><header class="container" id="header"><div class="header"><div class="header-left"><div class="avatar"><img src="/images/avatar.png"></div><div class="author"><div class="author-name"><a href="/">InternetWhiteAndBlack</a></div><div class="about-me">weiz</div></div></div><div class="header-right"><ul class="navigation"><li><a href="/archives">归档</a></li></ul></div><div class="about-me-mask"><div class="about-me-wrap"><div class="about-me__header"><div class="avatar"><img src="/images/avatar.png"></div></div><ul class="socials"><li class="social-item"><span class="label"><img src="/images/socials/github.svg" alt="https://github.com/iwandb/"></span><a href="https://github.com/iwandb/" target="_blank" title="https://github.com/iwandb/">https://github.com/iwandb/</a></li><li class="social-item"><span class="label"><img src="/images/socials/email.svg" alt="azhao.1981@gmail.com"></span><span>azhao.1981@gmail.com</span></li><li class="social-item"><span class="label"><img src="/images/socials/wechat.svg" alt="azhao1981"></span><span>azhao1981</span></li></ul></div></div></div></header><div class="container post"><section class="article"><div class="title">open api</div><div class="date">写于2020年01月09日</div><div class="content"><p>开放 API</p>
+<h2 id="腾讯企业邮箱开放-API"><a href="#腾讯企业邮箱开放-API" class="headerlink" title="腾讯企业邮箱开放 API"></a>腾讯企业邮箱开放 API</h2><p><a href="https://exmail.qq.com/qy_mng_logic/doc" target="_blank" rel="noopener">文档</a></p>
+<h3 id="开通"><a href="#开通" class="headerlink" title="开通"></a>开通</h3><p>引用: <a href="https://blog.csdn.net/kuixiebeng6753/article/details/88400530" target="_blank" rel="noopener">腾讯企业邮箱OpenApi调用说明</a></p>
+<blockquote>
+<p>这个文档和上面的文档好像有点不太一样</p>
+</blockquote>
+<p>旧版: <a href="http://exmail.qq.com" target="_blank" rel="noopener">http://exmail.qq.com</a> -&gt; 管理员-&gt;管理页面-&gt;工具箱-&gt;开放xx，“立即申请”</p>
+<p>以下是旧版示例.没有使用新版</p>
+<p>新版本在增值服务中(by 腾讯客服)</p>
+<p>得到 client_id + client_secret</p>
+<h3 id="获取-token"><a href="#获取-token" class="headerlink" title="获取 token"></a>获取 token</h3><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">RestClient::Request.execute(</span><br><span class="line">  <span class="symbol">method:</span> <span class="symbol">:post</span>,</span><br><span class="line">  <span class="symbol">url:</span> <span class="string">"https://exmail.qq.com/cgi-bin/token"</span>,</span><br><span class="line">  <span class="symbol">payload:</span> &#123;</span><br><span class="line">    <span class="symbol">client_id:</span> <span class="string">"client_id"</span>,</span><br><span class="line">    <span class="symbol">client_secret:</span> <span class="string">"client_secret"</span>,</span><br><span class="line">    <span class="symbol">grant_type:</span> <span class="string">"client_credentials"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="symbol">timeout:</span> <span class="number">3</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取邮箱列表"><a href="#获取邮箱列表" class="headerlink" title="获取邮箱列表"></a>获取邮箱列表</h3><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">RestClient::Request.execute(</span><br><span class="line">  <span class="symbol">method:</span> <span class="symbol">:post</span>,</span><br><span class="line">  <span class="symbol">url:</span> <span class="string">"http://openapi.exmail.qq.com:12211/openapi/user/list"</span>,</span><br><span class="line">  <span class="symbol">payload:</span> &#123; <span class="string">"Ver"</span> =&gt; <span class="number">0</span>, <span class="string">"access_token"</span> =&gt; access_token &#125;,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>error: <code>{&quot;errcode&quot;=&gt;&quot;10001&quot;, &quot;error&quot;=&gt;&quot;ip_freq_block&quot;}</code> 这个需要加开放接口白名单,找不到入口用版本,找工具箱</li>
+</ul>
+<p><a href="https://zhidao.baidu.com/question/683738906848879012.html" target="_blank" rel="noopener">开放接口 api白名单</a></p>
+<p><a href="https://github.com/cnzzr/BizMailOpenApi" target="_blank" rel="noopener">本项目实现了腾讯企业邮箱的常用接口，提供其旧版接口文档中的绝在部分功能实现，项目依赖 JFinal/ Jodd</a></p>
+</div><div class="tags"><a class="tag-link" href="/tags/api/" rel="tag">api</a></div></section></div><div class="container"><ul class="nav"><li>下一篇：<a href="/2020/01/07/How-to-Connect-to-the-Internet/">科学上网法 How to Connect to the Internet</a></li></ul></div><div id="backToTop"><div class="back-arrow back-arrow-left"></div><div class="back-arrow back-arrow-right"></div></div><footer class="container"><div class="rights"><span>Powered by </span><a href="http://hexo.io" target="_blank">Hexo</a><span>, Theme </span><a href="https://github.com/gary-Shen/hexo-theme-curry" target="_blank">Curry</a><span>.</span></div></footer>
+<script src="/script/jquery.min.js"></script>
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+<script src="/script/index.js"></script>
+<script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-61220413-1', 'auto');
+ga('send', 'pageview');</script>
+<script src="/script/post.js"></script>
+</body></html>
